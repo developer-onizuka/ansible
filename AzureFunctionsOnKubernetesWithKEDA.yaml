@@ -1,0 +1,20 @@
+- hosts: localhost
+
+  tasks:
+  - name: install wget
+    apt:
+      name: wget
+    become: yes
+
+  - name: download packages-microsoft-prod.deb
+    become: yes
+    shell: wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+    
+  - name: install packages-microsoft-prod.deb
+    become: yes
+    shell: dpkg -i packages-microsoft-prod.deb
+
+  - name: install azure-functions-core-tools
+    become: yes
+    shell: apt-get update && apt-get install azure-functions-core-tools-4
+
