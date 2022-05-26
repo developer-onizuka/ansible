@@ -1,0 +1,35 @@
+- hosts: localhost
+
+  tasks:
+  - name: install curl
+    apt:
+      name: curl
+    become: yes
+
+  - name: download helm 
+    become: yes
+    shell: |
+           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+           && chmod 700 get_helm.sh \
+           && ./get_helm.sh
+
+  - name: helm repo add kedacore
+    become: yes
+    shell: helm repo add kedacore https://kedacore.github.io/charts && helm repo update
+
+  - name: helm install kedacore
+    become:# yes
+    shell: kubectl create namespace keda && helm install keda kedacore/keda --namespace keda
+
+  - name: helm repo add bitnami
+    become: yes
+    shell: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+  - name: helm install rabbitmq
+    become: yes
+    shell: helm install rabbitmq --set auth.username=user --set auth.password=PASSWORD --set persistence.storageClass=nfs-vm-csi --set service.type=LoadBalancer bitnami/rabbitmq
+
+  - name: helm install redis
+    become: yes
+    shell: helm install redis bitnami/redis --set master.service.type=LoadBalancer --set master.disableCommands=""
+

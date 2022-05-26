@@ -1,0 +1,45 @@
+- hosts: localhost
+
+  tasks:
+  - name: install curl
+    apt:
+      name: curl
+    become: yes
+
+  - name: download helm 
+    become: yes
+    shell: |
+           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+           && chmod 700 get_helm.sh \
+           && ./get_helm.sh
+
+  - name: helm repo add csi-driver-nfs 
+    become: yes
+    shell: helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+
+  - name: helm install csi-driver-nfs 
+    become: yes
+    shell: helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system --version v4.0.0
+
+    # If you wanna uninstall csi-driver-nfs, then do a following command.
+    # helm uninstall csi-driver-nfs -n kube-system
+
+  - name: directory created
+    file:
+      path: "/home/vagrant/persistentVolume-CSI"
+      state: directory
+      owner: "root"
+      group: "root"
+      mode: "775"
+
+  - name: git clone
+    ansible.builtin.git:
+      repo: https://github.com/developer-onizuka/persistentVolume-CSI.git
+      dest: /home/vagrant/persistentVolume-CSI/
+
+  - name: create storage class
+    shell: kubectl create -f /home/vagrant/persistentVolume-CSI/storageclass-vm-nfs.yaml
+
+  - name: create persistent volume craim
+    shell: kubectl create -f /home/vagrant/persistentVolume-CSI/pvc-nfs-vm-csi-dynamic.yaml
+

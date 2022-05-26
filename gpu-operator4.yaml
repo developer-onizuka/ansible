@@ -1,0 +1,28 @@
+- hosts: localhost
+
+  tasks:
+  - name: install curl
+    apt:
+      name: curl
+    become: yes
+
+  - name: download helm 
+    become: yes
+    shell: |
+           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+           && chmod 700 get_helm.sh \
+           && ./get_helm.sh
+
+  - name: helm repo add nvidia
+    become: yes
+    shell: helm repo add nvidia https://nvidia.github.io/gpu-operator && helm repo update
+
+  - name: helm install gpu-operator
+    become: yes
+    environment:
+      VERSION: 470.103.01
+    shell: helm install --wait --generate-name nvidia/gpu-operator --set driver.version=$VERSION
+
+    # If you wanna uninstall gpu-operator, then do a following command.
+    # helm delete $(helm ls -n default | awk '/gpu-operator/{print $1}') -n default
+

@@ -1,24 +1,10 @@
 - hosts: localhost
 
-#  tasks:
-#  - name: directory created
-#    file:
-#      path: "/home/vagrant/metalLB"
-#      state: directory
-#      owner: "root"
-#      group: "root"
-#      mode: "775"
-
-#  tasks:
-#  - name: git clone
-#    ansible.builtin.git:
-#      repo: https://github.com/developer-onizuka/metalLB.git
-#      dest: /home/vagrant/metalLB/
-
   tasks:
   - name: create metalLB
-    become: yes
     shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/namespace.yaml && kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/metallb.yaml
+
+  - name: define ip addresses for metalLB
     shell: |
       cat <<EOF | kubectl create -f -
       apiVersion: v1
