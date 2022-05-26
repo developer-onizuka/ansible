@@ -1,0 +1,28 @@
+- hosts: localhost
+
+  tasks:
+  - name: install curl
+    apt:
+      name: curl
+    become: yes
+
+  - name: download istio
+    environment:
+      ISTIO_VERSION: 1.13.4
+    shell: curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
+#    uri:
+#     url: https://istio.io/downloadIstio
+#     return_content: yes
+
+  - name: install istio
+    become: yes
+    environment:
+      ISTIO_VERSION: 1.13.4
+    shell: export PATH=$PATH:/home/vagrant/ansible/istio-$ISTIO_VERSION/bin
+    shell: istioctl install -y
+    shell: kubectl label namespaces default istio-injection=enabled
+    shell: kubectl apply -f /home/vagrant/ansible/istio-$ISTIO_VERSION/samples/addons/.
+#    register: result
+#  - debug:
+#     msg: "{{ result }}"
+
