@@ -1,0 +1,42 @@
+- hosts: localhost
+
+  tasks:
+  - name: install x11-xserver-utils
+    apt:
+      name: x11-xserver-utils
+    become: yes
+
+  - name: install x11-apps
+    apt:
+      name: x11-apps
+    become: yes
+
+  - name: edit /etc/ssh/sshd_config
+    become: yes
+    shell: |
+      cat <<EOF >> /etc/ssh/sshd_config
+      X11Forwarding yes
+      X11DisplayOffset 10
+      X11UseLocalhost no
+      EOF
+
+  - name: restart sshd
+    become: yes
+    shell: service sshd restart
+
+  - name: install wget
+    apt:
+      name: wget
+    become: yes
+
+  - name: add repo
+    become: yes
+    shell: sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+  - name: download key
+    become: yes
+    shell: sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
+  - name: install google-chrome
+    become: yes
+    shell: apt update && apt install google-chrome-stable 
