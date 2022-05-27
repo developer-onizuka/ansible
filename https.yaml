@@ -1,0 +1,31 @@
+- hosts: localhost
+
+  tasks:
+  - name: create security certificate file
+    shell: openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=example Inc./CN=example.com' -keyout example.com.key -out example.com.crt
+
+  - name: create certificate signing request 
+    shell: openssl req -newkey rsa:2048 -nodes -subj "/CN=onprem.example.com/O=onprem organization" -keyout onprem.example.com.key -out onprem.example.com.csr
+
+  - name: create self-sign-cert
+    shell: openssl x509 -req -sha256 -days 365 -CA example.com.crt -CAkey example.com.key -set_serial 0 -in onprem.example.com.csr -out onprem.example.com.crt
+
+  - name: create secret 
+    shell: kubectl create -n istio-system secret tls onprem-credential --key=onprem.example.com.key --cert=onprem.example.com.crt
+
+  - name: directory created
+    file:
+      path: "/home/vagrant/hybridCloud"
+      state: directory
+      owner: "root"
+      group: "root"
+      mode: "775"
+
+  - name: git clone
+    ansible.builtin.git:
+      repo: https://github.com/developer-onizuka/hybridCloud.git
+      dest: /home/vagrant/hybridCloud/
+
+  - name: create ingress-gateway-L7-https
+    shell: kubectl apply -f /home/vagrant/hybridCloud/ingress-gateway-L7-https.yaml
+
