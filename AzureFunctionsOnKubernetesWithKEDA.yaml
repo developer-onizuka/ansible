@@ -16,5 +16,9 @@
 
   - name: install azure-functions-core-tools
     become: yes
-    shell: apt-get update && apt-get install azure-functions-core-tools-4
+    shell: apt-get update && apt-get install -y azure-functions-core-tools-4
+
+  - name: install dotnet-sdk-6.0
+    become: yes
+    shell: apt-get install -y apt-transport-https dotnet-sdk-6.0
 
