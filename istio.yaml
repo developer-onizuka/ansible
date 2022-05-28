@@ -14,15 +14,11 @@
 #     url: https://istio.io/downloadIstio
 #     return_content: yes
 
-  - name: export istio path
+  - name: install istio
     become: yes
     environment:
       ISTIO_VERSION: 1.13.4
-    shell: export PATH=$PATH:/home/vagrant/ansible/istio-$ISTIO_VERSION/bin
-
-  - name: install istio
-    become: yes
-    shell: istioctl install -y
+    shell: export PATH=$PATH:/home/vagrant/ansible/istio-$ISTIO_VERSION/bin && istioctl install -y
 
   - name: create label 
     shell: kubectl label namespaces default istio-injection=enabled

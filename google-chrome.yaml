@@ -39,4 +39,4 @@
 
   - name: install google-chrome
     become: yes
-    shell: apt update && apt install google-chrome-stable 
+    shell: apt update && apt install -y google-chrome-stable 
