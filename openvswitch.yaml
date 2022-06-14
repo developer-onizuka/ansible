@@ -1,0 +1,38 @@
+- hosts: localhost
+
+  tasks:
+  - name: install openvswitch-switch
+    apt:
+      name: openvswitch-switch
+    become: yes
+
+  - name: install openvswitch-common
+    apt:
+      name: openvswitch-common
+    become: yes
+
+  - name: ovs-vsctl add-br br0
+    shell: ovs-vsctl add-br br0
+    become: yes
+
+  - name: ovs-vsctl add-port br0 virbr2
+    shell: ovs-vsctl add-port br0 virbr2
+    become: yes
+
+  - name: ovs-vsctl add-port br0 gre0 -- set interface gre0 type=gre options:remote_ip=192.168.x.x
+    shell: ovs-vsctl add-port br0 gre0 -- set interface gre0 type=gre options:remote_ip=192.168.1.5
+    become: yes
+
+  - name: enable openvswitch
+    shell: systemctl enable --now openvswitch-switch
+    become: yes
+
+  - name: show openvswitch
+    shell: ovs-vsctl show
+    become: yes
+    register: return_from_shell
+
+  - name: show previous shell stdout
+    debug:
+      msg: "{{ return_from_shell.stdout }}"
+
