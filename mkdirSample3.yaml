@@ -1,0 +1,24 @@
+- hosts: localhost
+
+  vars:
+    - dir: [
+             { parent: parent1, child: child1 },
+             { parent: parent2, child: child2 },
+             { parent: parent3, child: child3 }
+           ]
+
+  tasks:
+    - name: make dir
+      file: path={{ item.parent }}/{{ item.child }} state=directory
+      with_items:
+        - "{{ dir }}"
+
+    - name: date
+      environment:
+        FILE: test.txt
+      shell: |
+        DATE=$(date)
+        echo $DATE > {{ item.parent }}/{{ item.child }}/$FILE
+      with_items:
+        - "{{ dir }}"
+        

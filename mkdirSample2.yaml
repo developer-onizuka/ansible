@@ -1,0 +1,10 @@
+- hosts: localhost
+
+  tasks:
+    - name: make dir 
+      file: path={{ item.parent }}/{{ item.child }} state=directory
+      with_items:
+        - { parent: parent1, child: child1 }
+        - { parent: parent2, child: child2 }
+        - { parent: parent3, child: child3 }
+

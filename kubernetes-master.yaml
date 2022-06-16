@@ -1,0 +1,74 @@
+- hosts: localhost
+  vars:
+    - worker: [ 
+              { name: worker1, ip: 192.168.33.101 },
+              { name: worker2, ip: 192.168.33.102 },
+              { name: worker3, ip: 192.168.33.103 },
+              { name: worker4, ip: 192.168.33.104 },
+              { name: worker5, ip: 192.168.33.105 },
+              { name: worker6, ip: 192.168.33.106 },
+              { name: worker7, ip: 192.168.33.107 },
+              { name: worker8, ip: 192.168.33.108 },
+              { name: worker9, ip: 192.168.33.109 }
+            ]
+
+  tasks:
+    - name: install sshpass
+      apt:
+        name: sshpass
+      become: yes
+
+    - name: ssh-keygen 
+      shell: ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa
+
+    - name: ssh config
+      shell: |
+        cat <<EOF > ~/.ssh/config
+        host 192.168.33.*
+        StrictHostKeyChecking no
+        EOF
+
+    - name: sshpass
+      become: yes
+      with_items:
+        - "{{ worker }}"
+      shell: |
+        chmod 600 ~/.ssh/config
+        sshpass -p "vagrant" ssh-copy-id -i ~/.ssh/id_rsa.pub vagrant@{{ item.ip }}
+
+    - name: init kubernetes
+      become: yes
+      environment:
+        MASTER: 192.168.33.100
+        PODCIDR: 10.10.0.0/16
+      shell: |
+        kubeadm init --pod-network-cidr=$PODCIDR --apiserver-advertise-address=$MASTER
+        mkdir -p $HOME/.kube
+        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        chown $(id -u):$(id -g) $HOME/.kube/config
+
+    - name: setup cni
+      become: yes
+      environment:
+        NETWORK: 192.168.33.1
+      shell: |
+        kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+        kubectl set env daemonset/calico-node -n kube-system IP_AUTODETECTION_METHOD=can-reach=$NETWORK
+
+    - name: join k8s-cluster 
+      become: yes
+      with_items:
+        - "{{ worker }}"
+      environment:
+        MASTER: 192.168.33.100
+      shell: |
+        token=$(kubeadm token list |tail -n 1 |awk '{print $1}')
+        hashkey=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //')
+        ssh vagrant@{{ item.ip }} sudo kubeadm join $MASTER:6443 --token $token --discovery-token-ca-cert-hash sha256:$hashkey
+
+    - name: label
+      become: yes
+      with_items:
+        - "{{ worker }}"
+      shell: kubectl label node {{ item.name }} node-role.kubernetes.io/node= {{ item.name }}
+

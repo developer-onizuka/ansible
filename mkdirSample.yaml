@@ -1,0 +1,13 @@
+- hosts: localhost
+
+  vars:
+    - staging: [ test1, test2, test3 ]
+    - production: [ test4, test5, test6 ]
+
+  tasks:
+    - name: make dir 
+      file: path={{ item }} state=directory
+      with_items:
+        - "{{ staging }}"
+        - "{{ production }}"
+
