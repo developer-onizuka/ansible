@@ -44,6 +44,7 @@ EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
       sudo apt-get update
+      #sudo apt-get install -y -q kubelet kubectl kubeadm
       sudo apt-get install -y -q kubelet=1.23.6-00 kubectl=1.23.6-00 kubeadm=1.23.6-00
       sudo echo "KUBELET_EXTRA_ARGS=--node-ip=192.168.33.101" > /etc/default/kubelet
       sudo systemctl daemon-reload
@@ -98,6 +99,7 @@ EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
       sudo apt-get update
+      #sudo apt-get install -y -q kubelet kubectl kubeadm
       sudo apt-get install -y -q kubelet=1.23.6-00 kubectl=1.23.6-00 kubeadm=1.23.6-00
       sudo echo "KUBELET_EXTRA_ARGS=--node-ip=192.168.33.102" > /etc/default/kubelet
       sudo systemctl daemon-reload
@@ -152,6 +154,7 @@ EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
       sudo apt-get update
+      #sudo apt-get install -y -q kubelet kubectl kubeadm
       sudo apt-get install -y -q kubelet=1.23.6-00 kubectl=1.23.6-00 kubeadm=1.23.6-00
       sudo echo "KUBELET_EXTRA_ARGS=--node-ip=192.168.33.103" > /etc/default/kubelet
       sudo systemctl daemon-reload
@@ -208,6 +211,7 @@ EOF
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
       sudo apt-get update
+      #sudo apt-get install -y -q kubelet kubectl kubeadm
       sudo apt-get install -y -q kubelet=1.23.6-00 kubectl=1.23.6-00 kubeadm=1.23.6-00
       sudo echo "KUBELET_EXTRA_ARGS=--node-ip=192.168.33.104" > /etc/default/kubelet
       sudo systemctl daemon-reload
