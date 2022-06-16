@@ -19,6 +19,7 @@ ansible-playbook ansible/openvswitch.yaml
 # 2. For Kubernetes Master Node
 ```
 git clone https://github.com/developer-onizuka/ansible
+ansible-playbook ansible/kubernetes-master.yaml
 ansible-playbook ansible/metalLB.yaml
 ansible-playbook ansible/istio.yaml
 ansible-playbook ansible/persistentVolume-CSI.yaml
