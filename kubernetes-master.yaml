@@ -1,16 +1,16 @@
 - hosts: localhost
   vars:
     - worker: [ 
-              { name: worker1, ip: 192.168.33.101 },
-              { name: worker2, ip: 192.168.33.102 },
-              { name: worker3, ip: 192.168.33.103 },
-              { name: worker4, ip: 192.168.33.104 },
-              { name: worker5, ip: 192.168.33.105 },
-              { name: worker6, ip: 192.168.33.106 },
-              { name: worker7, ip: 192.168.33.107 },
-              { name: worker8, ip: 192.168.33.108 },
-              { name: worker9, ip: 192.168.33.109 }
-            ]
+                { name: worker1, ip: 192.168.33.101 },
+                { name: worker2, ip: 192.168.33.102 },
+                { name: worker3, ip: 192.168.33.103 },
+                { name: worker4, ip: 192.168.33.104 },
+                { name: worker5, ip: 192.168.33.105 },
+                { name: worker6, ip: 192.168.33.106 },
+                { name: worker7, ip: 192.168.33.107 },
+                { name: worker8, ip: 192.168.33.108 },
+                { name: worker9, ip: 192.168.33.109 }
+              ]
 
   tasks:
     - name: install sshpass
