@@ -70,5 +70,5 @@
       become: yes
       with_items:
         - "{{ worker }}"
-      shell: kubectl label node {{ item.name }} node-role.kubernetes.io/node= {{ item.name }}
+      shell: kubectl label node {{ item.name }} node-role.kubernetes.io/node={{ item.name }}
 
