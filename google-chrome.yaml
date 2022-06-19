@@ -11,6 +11,11 @@
       name: x11-apps
     become: yes
 
+  - name: install openssh-server
+    apt:
+      name: openssh-server
+    become: yes
+
   - name: edit /etc/ssh/sshd_config
     become: yes
     shell: |
