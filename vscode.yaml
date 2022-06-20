@@ -1,9 +1,9 @@
 - hosts: localhost
 
   tasks:
-  - name: install libxss1
+  - name: install libsecret-common
     apt:
-      name: libxss1
+      name: libsecret-common
     become: yes
 
   - name: install libsecret-1-0
@@ -11,18 +11,18 @@
       name: libsecret-1-0
     become: yes
 
-  - name: install libsecret-common
+  - name: install libxss1
     apt:
-      name: libsecret-common
+      name: libxss1
     become: yes
 
-  - name: install curl
+  - name: install wget
     apt:
-      name: curl
+      name: wget
     become: yes
 
   - name: download vscode 
-    shell: curl -L https://az764295.vo.msecnd.net/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/code_1.68.1-1655263094_amd64.deb
+    shell: wget https://az764295.vo.msecnd.net/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/code_1.68.1-1655263094_amd64.deb
 
   - name: install vscode
     shell: sudo dpkg -i code_1.68.1-1655263094_amd64.deb
