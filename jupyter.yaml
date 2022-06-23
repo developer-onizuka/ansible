@@ -1,0 +1,14 @@
+- hosts: localhost
+
+  tasks:
+  - name: install pip3
+    apt:
+      name: python3-pip
+    become: yes
+
+  - name: install jupyther
+    shell: |
+           pip3 install markupsafe==2.0.1
+           pip3 install Jupyter
+           pip3 install jupyterlab
+    become: yes
