@@ -12,3 +12,7 @@
            pip3 install Jupyter
            pip3 install jupyterlab
     become: yes
+
+#  - name: start jupyther-lab
+#    shell: jupyter-lab --ip "0.0.0.0" &
+
