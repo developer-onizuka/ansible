@@ -1,0 +1,8 @@
+- hosts: localhost
+
+  tasks:
+  - name: install tmux
+    apt:
+      name: tmux
+    become: yes
+
