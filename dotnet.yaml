@@ -1,0 +1,7 @@
+- hosts: localhost
+
+  tasks:
+  - name: install dotnet-sdk-6.0
+    become: yes
+    shell: apt-get update && apt-get install -y apt-transport-https dotnet-sdk-6.0
+
