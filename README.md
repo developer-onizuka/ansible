@@ -29,3 +29,6 @@ ansible-playbook ansible/AzureFunctionsOnKubernetesWithKEDA.yaml
 ansible-playbook ansible/https.yaml
 ansible-playbook ansible/google-chrome.yaml
 ```
+
+# 3. Completion-bash
+> https://qiita.com/superbrothers/items/631508630320aa1dbcbc
