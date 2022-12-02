@@ -1,4 +1,5 @@
 # ansible
+> https://github.com/developer-onizuka/setup-mintLinux#5-run-vagrant-and-gpu-workloads
 
 # 1. Install Ansible on each node
 ```
