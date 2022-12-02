@@ -8,14 +8,14 @@ sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt install -y ansible
 ```
 
-# 2. For SetUp of Master Node After installing Ubuntu
+# 2. For SetUp of BearMetal Node (Dell Precision at my home) After installing Ubuntu
 ```
 git clone https://github.com/developer-onizuka/ansible
 ansible-playbook ansible/vagrant-libvirt.yaml
 ansible-playbook ansible/openvswitch.yaml (<-- Need modification of IPs)
 ```
 
-# 3. For SetUp Worker Node After installing Ubuntu
+# 3. For SetUp BearMetal Nodes (Dell Optiplex at my home) After installing Ubuntu
 ```
 git clone https://github.com/developer-onizuka/ansible
 ansible-playbook ansible/update-grub.yaml
@@ -23,8 +23,9 @@ ansible-playbook ansible/vagrant-libvirt.yaml
 ansible-playbook ansible/openvswitch.yaml (<-- Need modification of IPs)
 ```
 
-# 4. For Only Kubernetes Master Node
+# 4. For Only Kubernetes Master Node (Virtual Machine on Precision at my home)
 ```
+vagrant ssh
 git clone https://github.com/developer-onizuka/ansible
 ansible-playbook ansible/kubernetes-master.yaml
 ansible-playbook ansible/metalLB.yaml
