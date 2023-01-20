@@ -6,7 +6,7 @@
     shell: sed -i 's/"quiet splash"/"quiet splash intel_iommu=on vfio_iommu_type1.allow_unsafe_interrupts=1 iommu=pt vfio-pci.ids=XXXXX"/' /etc/default/grub 
   - name: lspci for GPU
     become: yes
-    shell: vfio=$(lspci -nnk |grep NVIDIA | awk '{print $(NF-2)}' | sed -e 's/\[\|\]//g' | sed -z 's/\n/,/') && echo $vfio &&  sed -i "s/XXXXX/$vfio/" /etc/default/grub 
+    shell: vfio=$(lspci -nn |grep NVIDIA | awk '{print $(NF-2)}' | sed -e 's/\[\|\]//g' | sed -z 's/\n/,/') && echo $vfio &&  sed -i "s/XXXXX/$vfio/" /etc/default/grub 
     register: return_from_shell
   - name: show previous shell stdout
     debug:
