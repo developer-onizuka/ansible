@@ -16,14 +16,15 @@
       name: libxss1
     become: yes
 
-  - name: install wget
-    apt:
-      name: wget
+  - name: add repo for vscode 
+    shell: |
+      curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+      install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+      echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
+      apt update
     become: yes
 
-  - name: download vscode 
-    shell: wget https://az764295.vo.msecnd.net/stable/30d9c6cd9483b2cc586687151bcbcd635f373630/code_1.68.1-1655263094_amd64.deb
-
-  - name: install vscode
-    shell: sudo dpkg -i code_1.68.1-1655263094_amd64.deb
+  - name: install code
+    apt:
+      name: code 
     become: yes
