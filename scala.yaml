@@ -7,7 +7,6 @@
     become: yes
 
   - name: install standard Scala applications 
-    become: yes
     shell: |
       curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz" | gzip -d > cs 
       chmod +x cs
